@@ -8,6 +8,8 @@ local function _execute(code: stack.Stack, stack: stack.Stack, registers: regset
         local inst = code:pop_u8()
         if instset.INST.HLT.id == inst then
             break
+        -- ::: Stack ::: --
+        -- Push Constants --
         elseif inst == instset.INST.PUSHCB.id then
             stack:push_u8(code:pop_u8())
         elseif inst == instset.INST.PUSHCS.id then
@@ -18,8 +20,9 @@ local function _execute(code: stack.Stack, stack: stack.Stack, registers: regset
             stack:push_f32(code:pop_f32())
         elseif inst == instset.INST.PUSHCDF.id then
             stack:push_f64(code:pop_f64())
+        -- Push Registers --
         elseif inst == instset.INST.PUSHRB.id then
-            stack:push_u32(code:pop_u32())
+            stack:push_u8(registers:get(code:pop_u8()))
         end
     end
 end

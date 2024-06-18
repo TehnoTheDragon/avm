@@ -1,13 +1,13 @@
 export type REGSET = {
-    set: (index: number, value: number) -> number,
-    get: (index: number) -> (),
+    get: (REGSET, index: number) -> number,
+    set: (REGSET, index: number, value: number) -> (),
 
-    add: (a: number, b: number) -> (),
-    sub: (a: number, b: number) -> (),
-    mul: (a: number, b: number) -> (),
-    div: (a: number, b: number) -> (),
-    inc: (index: number) -> (),
-    dec: (index: number) -> (),
+    add: (REGSET, a: number, b: number) -> (),
+    sub: (REGSET, a: number, b: number) -> (),
+    mul: (REGSET, a: number, b: number) -> (),
+    div: (REGSET, a: number, b: number) -> (),
+    inc: (REGSET, index: number) -> (),
+    dec: (REGSET, index: number) -> (),
 }
 
 local function assert_register_index(index: number, count: number)
@@ -56,7 +56,7 @@ local function _create_regset(count: number): REGSET
         self.set(index, self.get(index) - 1)
     end
 
-    return self
+    return (self :: any) :: REGSET
 end
 
 return {
