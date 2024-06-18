@@ -16,11 +16,11 @@ local INST: {[string]: INSTRUCTION} = {
     PUSHRF = { id = 0xB3, size = 1 }, -- pushrf <u8:register>
     PUSHRDF = { id = 0xB4, size = 1 }, -- pushrdf <u8:register>
 
-    POPB = { id = 0xB5, size = 2 }, -- popb <u8:signed> <u8:register>
-    POPS = { id = 0xB6, size = 2 }, -- pops <u8:signed> <u8:register>
-    POPL = { id = 0xB7, size = 2 }, -- popl <u8:signed> <u8:register>
-    POPF = { id = 0xB7, size = 1 }, -- popf <u8:register>
-    POPDF = { id = 0xB7, size = 1 }, -- popdf <u8:register>
+    POPB = { id = 0xB5, size = 1 }, -- popb <u1:signed> <u7:register>
+    POPS = { id = 0xB6, size = 1 }, -- pops <u1:signed> <u7:register>
+    POPL = { id = 0xB7, size = 1 }, -- popl <u1:signed> <u7:register>
+    POPF = { id = 0xB8, size = 1 }, -- popf <u8:register>
+    POPDF = { id = 0xB9, size = 1 }, -- popdf <u8:register>
 
     -- Registers
 
