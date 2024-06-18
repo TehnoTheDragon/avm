@@ -1,3 +1,4 @@
+--!native
 export type REGSET = {
     get: (REGSET, index: number) -> number,
     set: (REGSET, index: number, value: number) -> (),

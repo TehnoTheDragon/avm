@@ -1,3 +1,4 @@
+--!native
 local memory = require("../memory")
 local stack = require("../stack")
 local instset = require("instset")
