@@ -22,38 +22,38 @@ local function _create_regset(count: number): REGSET
     local registers = table.create(count, 0)
     local self = {}
 
-    function self.get(index: number): number
+    function self:get(index: number): number
         assert_register_index(index, count)
         return registers[index]
     end
 
-    function self.set(index: number, value: number)
+    function self:set(index: number, value: number)
         assert_register_index(index, count)
         registers[index] = value
     end
 
-    function self.add(a: number, b: number)
-        self.set(a, self.get(a) + self.get(b))
+    function self:add(a: number, b: number)
+        self:set(a, self.get(a) + self.get(b))
     end
 
-    function self.sub(a: number, b: number)
-        self.set(a, self.get(a) - self.get(b))
+    function self:sub(a: number, b: number)
+        self:set(a, self.get(a) - self.get(b))
     end
 
-    function self.mul(a: number, b: number)
-        self.set(a, self.get(a) * self.get(b))
+    function self:mul(a: number, b: number)
+        self:set(a, self.get(a) * self.get(b))
     end
 
-    function self.div(a: number, b: number)
-        self.set(a, self.get(a) / self.get(b))
+    function self:div(a: number, b: number)
+        self:set(a, self.get(a) / self.get(b))
     end
 
-    function self.inc(index: number)
-        self.set(index, self.get(index) + 1)
+    function self:inc(index: number)
+        self:set(index, self.get(index) + 1)
     end
 
-    function self.dec(index: number)
-        self.set(index, self.get(index) - 1)
+    function self:dec(index: number)
+        self:set(index, self.get(index) - 1)
     end
 
     return (self :: any) :: REGSET
