@@ -1,9 +1,10 @@
-local memory = require("avm/memory")
-local storage = memory.create(256)
-local vstorage = memory.create_virtual(storage)
+local Memory = require("avm/memory")
+local Stack = require("avm/stack")
+local ram = Memory.create(1024)
+local stack = Stack.create(ram, 0, 64)
 
-local ptr = vstorage:allocate(1)
-ptr:write_i8(0, 0x41)
-local ptr2 = vstorage:allocate(1)
-ptr2:write_i8(0, 0x42)
-print(storage)
+
+stack:push_i8(40)
+stack:push_i8(40)
+stack:push_i8(40)
+print(stack)
