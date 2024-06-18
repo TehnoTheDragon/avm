@@ -1,3 +1,4 @@
+--!native
 local buffer = require("buffer")
 local memory = require("memory")
 
@@ -70,13 +71,13 @@ local function _create_stack(mem: memory.Memory, BEGIN: number, END: number): St
 
     buffer.impl_custom(self, function(self, name, registry)
         self[`pop_{name}`] = function(self)
-            assert(cursor <= END, `stack overflow, {END - cursor} bytes left`)
+            assert(cursor <= END, `stack underflow, {END - cursor} bytes left`)
             cursor += registry.b
             return registry.rw.r(BUFFER, BEGIN + cursor - registry.b)
         end
         
         self[`push_{name}`] = function(self, value)
-            assert(cursor > BEGIN, `stack underflow, {BEGIN - cursor} bytes left`)
+            assert(cursor > BEGIN, `stack overflow, {BEGIN - cursor} bytes left`)
             cursor -= registry.b
             registry.rw.w(BUFFER, BEGIN + cursor, value)
         end
