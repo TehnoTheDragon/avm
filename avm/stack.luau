@@ -13,16 +13,16 @@ export type Pop<T> = {
 }
 
 export type Push<T> = {
-    push_u8: (T, address: number, value: number) -> (),
-    push_i8: (T, address: number, value: number) -> (),
-    push_u16: (T, address: number, value: number) -> (),
-    push_i16: (T, address: number, value: number) -> (),
-    push_u32: (T, address: number, value: number) -> (),
-    push_i32: (T, address: number, value: number) -> (),
-    push_f32: (T, address: number, value: number) -> (),
+    push_u8: (T, value: number) -> (),
+    push_i8: (T, value: number) -> (),
+    push_u16: (T, value: number) -> (),
+    push_i16: (T, value: number) -> (),
+    push_u32: (T, value: number) -> (),
+    push_i32: (T, value: number) -> (),
+    push_f32: (T, value: number) -> (),
 }
 
-export type Stack = Pop<Stack> & Push<Stack> & {
+export type Stack = Pop<Stack> & Push<Stack> & buffer.Read<Stack> & {
     
 }
 
@@ -74,6 +74,12 @@ local function _create_stack(mem: memory.Memory, BEGIN: number, END: number): St
             assert(cursor > BEGIN, `stack underflow, {BEGIN - cursor} bytes left`)
             cursor -= registry.b
             registry.rw.w(BUFFER, BEGIN + cursor, value)
+        end
+
+        self[`read_{name}`] = function(self, index)
+            assert(index <= SIZE, `index {index} out of range {SIZE}`)
+            assert(index >= BEGIN, `index {index} out of range {BEGIN}`)
+            return registry.rw.r(BUFFER, BEGIN + index)
         end
     end)
 
