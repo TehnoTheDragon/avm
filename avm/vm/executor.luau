@@ -94,8 +94,7 @@ local function _execute(code: stack.Stack, stack: stack.Stack, registers: regset
             registers:set(reg, code:pop_f64())
         -- ::: Math Operations ::: --
         elseif inst == instset.INST.ADD.id then
-            local regA, regB = _extract_reg_reg(code:pop_u8())
-            registers:add(regA, regB)
+            registers:add(_extract_reg_reg(code:pop_u8()))
         end
         print(registers)
     end
