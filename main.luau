@@ -67,17 +67,20 @@ local function execute(program: Stack.Stack)
     return mem
 end
 
-stack:push_u8(INST.HLT)
-stack:push_u8(1)
-stack:push_u8(INST.PUSHR_I8)
-stack:push_u8(2)
-stack:push_u8(1)
-stack:push_u8(INST.ADD_I8)
-stack:push_u8(2)
-stack:push_u8(1)
-stack:push_u8(INST.MOV_I8)
-stack:push_u8(1)
-stack:push_u8(3)
-stack:push_u8(INST.MOV_I8)
+local function write_program(...: number)
+    local program = {...}
+    local size = #program
+    for i = size, 1, -1 do
+        stack:push_u8(program[i])
+    end
+end
+
+write_program(
+    INST.MOV_I8, 1, 1,
+    INST.MOV_I8, 2, 1,
+    INST.ADD_I8, 1, 2,
+    INST.PUSHR_I8, 1,
+    INST.HLT
+)
 
 print(execute(stack))
