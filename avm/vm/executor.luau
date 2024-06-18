@@ -3,9 +3,29 @@ local stack = require("../stack")
 local instset = require("instset")
 local regset = require("regset")
 
+local BYTE = 8
+local SHORT = 16
+local LONG = 32
+
+local pow = math.pow
+local extract = bit32.extract
+local band = bit32.band
+
+local function _integer_to_bits(value: number, bits: number, signed: boolean): number
+    if not signed then
+        return bit32.extract(value, 0, bits)
+    end
+    return band(value, pow(2, bits) - 1)
+end
+
+local function _extract_sign_reg(operand: number): (number, number)
+    return extract(operand, 0, 1), extract(operand, 1, 7)
+end
+
 local function _execute(code: stack.Stack, stack: stack.Stack, registers: regset.REGSET)
     while not code:empty() do
         local inst = code:pop_u8()
+        print(`instruction: {instset.inst2name(inst)}`)
         if instset.INST.HLT.id == inst then
             break
         -- ::: Stack ::: --
@@ -23,6 +43,35 @@ local function _execute(code: stack.Stack, stack: stack.Stack, registers: regset
         -- Push Registers --
         elseif inst == instset.INST.PUSHRB.id then
             stack:push_u8(registers:get(code:pop_u8()))
+        elseif inst == instset.INST.PUSHRS.id then
+            stack:push_u16(registers:get(code:pop_u8()))
+        elseif inst == instset.INST.PUSHRL.id then
+            stack:push_u32(registers:get(code:pop_u8()))
+        elseif inst == instset.INST.PUSHRF.id then
+            stack:push_f32(registers:get(code:pop_u8()))
+        elseif inst == instset.INST.PUSHRDF.id then
+            stack:push_f64(registers:get(code:pop_u8()))
+        -- Pop --
+        elseif inst == instset.INST.POPB.id then
+            local sign, reg = _extract_sign_reg(code:pop_u8())
+            local value = _integer_to_bits(stack:pop_u8(), BYTE, sign == 1)
+            registers:set(reg, value)
+        elseif inst == instset.INST.POPS.id then
+            local sign, reg = _extract_sign_reg(code:pop_u8())
+            local value = _integer_to_bits(stack:pop_u16(), SHORT, sign == 1)
+            registers:set(reg, value)
+        elseif inst == instset.INST.POPL.id then
+            local sign, reg = _extract_sign_reg(code:pop_u8())
+            local value = _integer_to_bits(stack:pop_u32(), LONG, sign == 1)
+            registers:set(reg, value)
+        elseif inst == instset.INST.POPF.id then
+            local reg = code:pop_u8()
+            local value = stack:pop_f32()
+            registers:set(reg, value)
+        elseif inst == instset.INST.POPDF.id then
+            local reg = code:pop_u8()
+            local value = stack:pop_f64()
+            registers:set(reg, value)
         end
     end
 end
