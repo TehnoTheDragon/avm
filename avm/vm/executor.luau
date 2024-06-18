@@ -30,7 +30,6 @@ end
 local function _execute(code: stack.Stack, stack: stack.Stack, registers: regset.REGSET)
     while not code:empty() do
         local inst = code:pop_u8()
-        print(`instruction: {instset.inst2name(inst)}`)
         if instset.INST.HLT.id == inst then
             break
         -- ::: Stack ::: --
