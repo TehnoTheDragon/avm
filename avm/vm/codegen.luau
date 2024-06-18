@@ -24,7 +24,6 @@ local function _instruction_type(inst: number): {}?
         end
         return result
     end
-    --error(`({inst}) is not an instruction`)
     return nil
 end
 
