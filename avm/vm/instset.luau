@@ -24,11 +24,18 @@ local INST: {[string]: INSTRUCTION} = {
 
     -- Registers
 
-    MOV = { id = 0xC0, size = 2 }, -- mov <u8:register>, <u8:value>
+    MOVB = { id = 0xC0, size = 2 }, -- mov <u8:register>, <u8:value>
     MOVS = { id = 0xC1, size = 3 }, -- movs <u8:register>, <u16:value>
     MOVL = { id = 0xC2, size = 5 }, -- movl <u8:register>, <u32:value>
     MOVF = { id = 0xC3, size = 5 }, -- movf <u8:register>, <f32:value>
     MOVDF = { id = 0xC4, size = 9 }, -- movdf <u8:register>, <f64:value>
+
+    -- Math
+
+    ADD = { id = 0xD0, size = 1 }, -- add <u4:register>, <u4:register>
+    SUB = { id = 0xD1, size = 1 }, -- sub <u4:register>, <u4:register>
+    MUL = { id = 0xD2, size = 1 }, -- mul <u4:register>, <u4:register>
+    DIV = { id = 0xD3, size = 1 }, -- div <u4:register>, <u4:register>
 }
 
 local INST2NAME = {}
