@@ -52,7 +52,7 @@ local function assert_write_memory(MEM_SIZE: number, address: number, value: num
         local sign = (signed and 1 or 0)
         local max = pow(2, bytes * (8 - sign))
         local min = (signed and -1 * max or 0)
-        assert(value > min, `value must be greater than {min}, got {value}`)
+        assert(value >= min, `value must be greater than {min}, got {value}`)
         assert(value < max, `value must be less than {max}, got {value}`)
     else
         assert(value >= -math.huge, `value must be greater than -math.huge, got {value}`)
@@ -96,32 +96,33 @@ local REGISTRY_MAP: {[string]: REGISTRY} = table.freeze({
 })
 
 export type Read<T> = {
-    read_u8: (self: T, address: number) -> number,
-    read_i8: (self: T, address: number) -> number,
-    read_u16: (self: T, address: number) -> number,
-    read_i16: (self: T, address: number) -> number,
-    read_u32: (self: T, address: number) -> number,
-    read_i32: (self: T, address: number) -> number,
-    read_f32: (self: T, address: number) -> number,
-    read_f64: (self: T, address: number) -> number,
+    read_u8: (T, address: number) -> number,
+    read_i8: (T, address: number) -> number,
+    read_u16: (T, address: number) -> number,
+    read_i16: (T, address: number) -> number,
+    read_u32: (T, address: number) -> number,
+    read_i32: (T, address: number) -> number,
+    read_f32: (T, address: number) -> number,
+    read_f64: (T, address: number) -> number,
 }
 
 export type Write<T> = {
-    write_u8: (self: T, address: number, value: number) -> (),
-    write_i8: (self: T, address: number, value: number) -> (),
-    write_u16: (self: T, address: number, value: number) -> (),
-    write_i16: (self: T, address: number, value: number) -> (),
-    write_u32: (self: T, address: number, value: number) -> (),
-    write_i32: (self: T, address: number, value: number) -> (),
-    write_f32: (self: T, address: number, value: number) -> (),
+    write_u8: (T, address: number, value: number) -> (),
+    write_i8: (T, address: number, value: number) -> (),
+    write_u16: (T, address: number, value: number) -> (),
+    write_i16: (T, address: number, value: number) -> (),
+    write_u32: (T, address: number, value: number) -> (),
+    write_i32: (T, address: number, value: number) -> (),
+    write_f32: (T, address: number, value: number) -> (),
 }
 
 export type Buffer = Write<Buffer> & Read<Buffer> & {
-    dump: () -> string,
-    fill: (address: number, size: number, value: number) -> (),
-    copy: (from: number, to: number, size: number) -> (),
-    read: (address: number, size: number) -> string,
-    write: (address: number, value: string) -> (),
+    dump: (Buffer) -> string,
+    fill: (Buffer, address: number, size: number, value: number) -> (),
+    copy: (Buffer, from: number, to: number, size: number) -> (),
+    read: (Buffer, address: number, size: number) -> string,
+    write: (Buffer, address: number, value: string) -> (),
+    get: (Buffer) -> buffer,
 }
 
 local function implement_custom_read(self: any, builder: (name: string, registry: REGISTRY) -> any)
@@ -154,7 +155,13 @@ local function implement_write(self: any, buf: buffer, MEM_SIZE: number)
     end
 end
 
-local function create_buffer(MEM_SIZE: number): Buffer
+local function implement_custom(self: any, builder: (self: any, name: string, registry: REGISTRY) -> any)
+    for name, registry in REGISTRY_MAP do
+        builder(self, name, registry)
+    end
+end
+
+local function _create_buffer(MEM_SIZE: number): Buffer
     assert(MEM_SIZE > 0, `size must be greater than 0, got {MEM_SIZE}`)
     local buffer = buffer_create(MEM_SIZE)
 
@@ -272,11 +279,13 @@ local function create_buffer(MEM_SIZE: number): Buffer
 end
 
 return {
-    create = create_buffer,
+    create = _create_buffer,
+    
     impl_custom_read = implement_custom_read,
     impl_read = implement_read,
     impl_custom_write = implement_custom_write,
     impl_write = implement_write,
+    impl_custom = implement_custom,
 
     assert_read_memory = assert_read_memory,
     assert_write_memory = assert_write_memory,
