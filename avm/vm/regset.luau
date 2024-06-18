@@ -44,27 +44,27 @@ local function _create_regset(count: number): REGSET
     end
 
     function self:add(a: number, b: number)
-        self:set(a, self.get(a) + self.get(b))
+        self:set(a, self:get(a) + self:get(b))
     end
 
     function self:sub(a: number, b: number)
-        self:set(a, self.get(a) - self.get(b))
+        self:set(a, self:get(a) - self:get(b))
     end
 
     function self:mul(a: number, b: number)
-        self:set(a, self.get(a) * self.get(b))
+        self:set(a, self:get(a) * self:get(b))
     end
 
     function self:div(a: number, b: number)
-        self:set(a, self.get(a) / self.get(b))
+        self:set(a, self:get(a) / self:get(b))
     end
 
     function self:inc(index: number)
-        self:set(index, self.get(index) + 1)
+        self:set(index, self:get(index) + 1)
     end
 
     function self:dec(index: number)
-        self:set(index, self.get(index) - 1)
+        self:set(index, self:get(index) - 1)
     end
 
     return (setmetatable(self, meta) :: any) :: REGSET
