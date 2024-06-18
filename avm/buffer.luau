@@ -114,6 +114,7 @@ export type Write<T> = {
     write_u32: (T, address: number, value: number) -> (),
     write_i32: (T, address: number, value: number) -> (),
     write_f32: (T, address: number, value: number) -> (),
+    write_f64: (T, address: number, value: number) -> (),
 }
 
 export type Buffer = Write<Buffer> & Read<Buffer> & {

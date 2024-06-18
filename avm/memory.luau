@@ -55,6 +55,7 @@ export type PointerWrite<T> = {
     write_u32: (self: T, offset: number, value: number) -> (),
     write_i32: (self: T, offset: number, value: number) -> (),
     write_f32: (self: T, offset: number, value: number) -> (),
+    write_f64: (self: T, offset: number, value: number) -> (),
 }
 
 export type VirtualRead<T> = {
@@ -76,6 +77,7 @@ export type VirtualWrite<T> = {
     write_u32: (self: T, address: number, offset: number, value: number) -> (),
     write_i32: (self: T, address: number, offset: number, value: number) -> (),
     write_f32: (self: T, address: number, offset: number, value: number) -> (),
+    write_f64: (self: T, address: number, offset: number, value: number) -> (),
 }
 
 export type Pointer = PointerRead<Pointer> & PointerWrite<Pointer> & {

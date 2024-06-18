@@ -20,6 +20,7 @@ export type Push<T> = {
     push_u32: (T, value: number) -> (),
     push_i32: (T, value: number) -> (),
     push_f32: (T, value: number) -> (),
+    push_f64: (T, value: number) -> (),
 }
 
 export type Stack = Pop<Stack> & Push<Stack> & buffer.Read<Stack> & {
