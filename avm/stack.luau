@@ -23,7 +23,7 @@ export type Push<T> = {
 }
 
 export type Stack = Pop<Stack> & Push<Stack> & buffer.Read<Stack> & {
-    
+    empty: (Stack) -> boolean,
 }
 
 local function _create_stack(mem: memory.Memory, BEGIN: number, END: number): Stack
@@ -63,11 +63,15 @@ local function _create_stack(mem: memory.Memory, BEGIN: number, END: number): St
     end
     local self = {}
 
+    function self:empty()
+        return cursor == END
+    end
+
     buffer.impl_custom(self, function(self, name, registry)
         self[`pop_{name}`] = function(self)
             assert(cursor <= END, `stack overflow, {END - cursor} bytes left`)
             cursor += registry.b
-            return registry.rw.r(BUFFER, BEGIN + cursor)
+            return registry.rw.r(BUFFER, BEGIN + cursor - registry.b)
         end
         
         self[`push_{name}`] = function(self, value)
