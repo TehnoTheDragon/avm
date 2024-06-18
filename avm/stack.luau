@@ -2,14 +2,14 @@ local buffer = require("buffer")
 local memory = require("memory")
 
 export type Pop<T> = {
-    pop_u8: (T, address: number) -> number,
-    pop_i8: (T, address: number) -> number,
-    pop_u16: (T, address: number) -> number,
-    pop_i16: (T, address: number) -> number,
-    pop_u32: (T, address: number) -> number,
-    pop_i32: (T, address: number) -> number,
-    pop_f32: (T, address: number) -> number,
-    pop_f64: (T, address: number) -> number,
+    pop_u8: (T) -> number,
+    pop_i8: (T) -> number,
+    pop_u16: (T) -> number,
+    pop_i16: (T) -> number,
+    pop_u32: (T) -> number,
+    pop_i32: (T) -> number,
+    pop_f32: (T) -> number,
+    pop_f64: (T) -> number,
 }
 
 export type Push<T> = {
