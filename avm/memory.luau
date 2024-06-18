@@ -27,7 +27,7 @@ local function assert_virtual_memory_write(MEM_SIZE: number, mapped_memory: {}, 
         local sign = (signed and 1 or 0)
         local max = pow(2, bytes * (8 - sign))
         local min = (signed and -1 * max or 0)
-        assert(value > min, `value must be greater than {min}, got {value}`)
+        assert(value >= min, `value must be greater than {min}, got {value}`)
         assert(value < max, `value must be less than {max}, got {value}`)
     else
         assert(value >= -math.huge, `value must be greater than -math.huge, got {value}`)
