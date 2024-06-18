@@ -22,6 +22,10 @@ local function _extract_sign_reg(operand: number): (number, number)
     return extract(operand, 0, 1), extract(operand, 1, 7)
 end
 
+local function _extract_reg_reg(operand: number): (number, number)
+    return extract(operand, 0, 4), extract(operand, 4, 4)
+end
+
 local function _execute(code: stack.Stack, stack: stack.Stack, registers: regset.REGSET)
     while not code:empty() do
         local inst = code:pop_u8()
@@ -72,6 +76,26 @@ local function _execute(code: stack.Stack, stack: stack.Stack, registers: regset
             local reg = code:pop_u8()
             local value = stack:pop_f64()
             registers:set(reg, value)
+        -- ::: Immediate Register ::: --
+        elseif inst == instset.INST.MOVB.id then
+            local reg = code:pop_u8()
+            registers:set(reg, code:pop_u8())
+        elseif inst == instset.INST.MOVS.id then
+            local reg = code:pop_u8()
+            registers:set(reg, code:pop_u16())
+        elseif inst == instset.INST.MOVL.id then
+            local reg = code:pop_u8()
+            registers:set(reg, code:pop_u32())
+        elseif inst == instset.INST.MOVF.id then
+            local reg = code:pop_u8()
+            registers:set(reg, code:pop_f32())
+        elseif inst == instset.INST.MOVDF.id then
+            local reg = code:pop_u8()
+            registers:set(reg, code:pop_f64())
+        -- ::: Math Operations ::: --
+        elseif inst == instset.INST.ADD.id then
+            local regA, regB = _extract_reg_reg(code:pop_u8())
+            registers:set(regA, registers:get(regA) + registers:get(regB))
         end
     end
 end
@@ -87,6 +111,7 @@ local function _create_executor()
     function self.run(code: stack.Stack)
         _execute(code, stack, registers)
         print(stack)
+        print(registers)
     end
 
     return self
