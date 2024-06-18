@@ -25,10 +25,10 @@ local INST: {[string]: INSTRUCTION} = {
     -- Registers
 
     MOV = { id = 0xC0, size = 2 }, -- mov <u8:register>, <u8:value>
-    MOVS = { id = 0xC1, size = 2 }, -- movs <u8:register>, <u16:value>
-    MOVL = { id = 0xC2, size = 4 }, -- movl <u8:register>, <u32:value>
-    MOVF = { id = 0xC3, size = 4 }, -- movf <u8:register>, <f32:value>
-    MOVDF = { id = 0xC4, size = 8 }, -- movdf <u8:register>, <f64:value>
+    MOVS = { id = 0xC1, size = 3 }, -- movs <u8:register>, <u16:value>
+    MOVL = { id = 0xC2, size = 5 }, -- movl <u8:register>, <u32:value>
+    MOVF = { id = 0xC3, size = 5 }, -- movf <u8:register>, <f32:value>
+    MOVDF = { id = 0xC4, size = 9 }, -- movdf <u8:register>, <f64:value>
 }
 
 local INST2NAME = {}
