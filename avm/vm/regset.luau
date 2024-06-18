@@ -20,6 +20,17 @@ local function _create_regset(count: number): REGSET
     assert(type(count) == 'number', `count must be a number, got {type(count)}`)
     assert(count > 0, `count must be greater than 0, got {count}`)
     local registers = table.create(count, 0)
+    local meta = {}
+    function meta:__tostring()
+        local result = ""
+        for i = 1, count do
+            result ..= string.format(`r{i}: %08X(%.3f); `, registers[i], registers[i])
+            if i % 2 == 0 and i < count then
+                result ..= "\n"
+            end
+        end
+        return result
+    end
     local self = {}
 
     function self:get(index: number): number
@@ -56,7 +67,7 @@ local function _create_regset(count: number): REGSET
         self:set(index, self.get(index) - 1)
     end
 
-    return (self :: any) :: REGSET
+    return (setmetatable(self, meta) :: any) :: REGSET
 end
 
 return {
