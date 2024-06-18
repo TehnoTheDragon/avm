@@ -95,6 +95,12 @@ local function _execute(code: stack.Stack, stack: stack.Stack, registers: regset
         -- ::: Math Operations ::: --
         elseif inst == instset.INST.ADD.id then
             registers:add(_extract_reg_reg(code:pop_u8()))
+        elseif inst == instset.INST.SUB.id then
+            registers:sub(_extract_reg_reg(code:pop_u8()))
+        elseif inst == instset.INST.MUL.id then
+            registers:mul(_extract_reg_reg(code:pop_u8()))
+        elseif inst == instset.INST.DIV.id then
+            registers:div(_extract_reg_reg(code:pop_u8()))
         end
         print(registers)
     end
