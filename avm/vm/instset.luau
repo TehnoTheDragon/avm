@@ -10,11 +10,11 @@ local INST: {[string]: INSTRUCTION} = {
     PUSHCF = { id = 0xA3, size = 4 }, -- pushcF <f32:value>
     PUSHCDF = { id = 0xA4, size = 8 }, -- pushcdf <f64:value>
 
-    PUSHRB = { id = 0xB0, size = 0 }, -- pushrb
-    PUSHRS = { id = 0xB1, size = 0 }, -- pushrs
-    PUSHRL = { id = 0xB2, size = 0 }, -- pushrl
-    PUSHRF = { id = 0xB3, size = 0 }, -- pushrf
-    PUSHRDF = { id = 0xB4, size = 0 }, -- pushrdf
+    PUSHRB = { id = 0xB0, size = 1 }, -- pushrb <u8:register>
+    PUSHRS = { id = 0xB1, size = 1 }, -- pushrs <u8:register>
+    PUSHRL = { id = 0xB2, size = 1 }, -- pushrl <u8:register>
+    PUSHRF = { id = 0xB3, size = 1 }, -- pushrf <u8:register>
+    PUSHRDF = { id = 0xB4, size = 1 }, -- pushrdf <u8:register>
 
     POPB = { id = 0xB5, size = 2 }, -- popb <u8:signed> <u8:register>
     POPS = { id = 0xB6, size = 2 }, -- pops <u8:signed> <u8:register>
