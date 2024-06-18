@@ -40,6 +40,10 @@ for k, v in pairs(INST) do
     setmetatable(v, {
         __tostring = function(self)
             return inst2name(self.id)
+        end,
+        __eq = function(self, other)
+            print(self.id, other)
+            return self.id == other
         end
     })
 end
@@ -60,7 +64,7 @@ setmetatable(INST, {
             result ..= `{v}({v.id}, 0x{string.format("%X", v.size)})\n`
         end
         return result
-    end
+    end,
 })
 
 table.freeze(INST2NAME)
