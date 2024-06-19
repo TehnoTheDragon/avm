@@ -1,17 +1,17 @@
 --!native
 local ELEMENTS_SIZE = table.freeze({
-    [0x00] = 8,
-    [0x01] = 16,
-    [0x02] = 32,
-    [0x03] = 32,
-    [0x04] = 64,
+    [0x0] = 8,
+    [0x1] = 16,
+    [0x2] = 32,
+    [0x3] = 32,
+    [0x4] = 64,
 })
 local ELEMENTS_SYM = table.freeze({
-    [0x00] = 'u',
-    [0x01] = 'u',
-    [0x02] = 'u',
-    [0x03] = 'f',
-    [0x04] = 'f',
+    [0x0] = 'u',
+    [0x1] = 'u',
+    [0x2] = 'u',
+    [0x3] = 'f',
+    [0x4] = 'f',
 })
 
 type INSTRUCTION = {
