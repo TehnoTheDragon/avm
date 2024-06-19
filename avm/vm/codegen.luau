@@ -54,6 +54,22 @@ local function _write_program(stack: stack.Stack, code: {number})
     end
 end
 
+local function _build_with_ast(stack: stack.Stack, ast: {})
+    local code = {}
+
+    for _, node in ast do
+        if node.kind == "instruction" then
+            table.insert(code, node.inst)
+            for _, v in node.elements do
+                table.insert(code, v)
+            end
+        end
+    end
+
+    _write_program(stack, code)
+end
+
 return {
     write_program = _write_program,
+    build_with_ast = _build_with_ast
 }
