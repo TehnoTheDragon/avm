@@ -97,14 +97,19 @@ local function _analyzer(ast: {})
             return
         end
         local inst_element_sizes = node.meta.type.element_sizes
-        print(node_elements_count, inst_elements_count, table.concat(inst_element_sizes, ', '))
+
+        -- not best solution, but I need fix it for now
+        local low = bit32.band(node.elements[1], 0xF)
+        local high = bit32.band(node.elements[2], 0xF)
+        local combine = bit32.lshift(high, 4) + low
+        node.elements = { combine }
     end
 
     for i, node in ast do
-        print(`[{i}]: {node}`)
         if node.kind == 'instruction' then
             analyze_instruction_operands(node)
         end
+        -- print(`[{i}]: {node}`)
     end
 end
 
