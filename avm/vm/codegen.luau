@@ -28,22 +28,23 @@ local function _instruction_type(inst: number): {}?
 end
 
 local function _write_program(stack: stack.Stack, code: {number})
-    print(table.concat(code, ", "))
     local push_list = {}
     local function push(t: string, value: number)
         table.insert(push_list, {t, value})
     end
 
-    local i = 1
-    while i <= #code do
-        local inst = code[i]
-        push("push_u8", inst)
-        i += 1
-        local instruction = _instruction_type(inst)
-        if instruction ~= nil then
-            for _, v in instruction do
-                push(v, code[i])
-                i += 1
+    do
+        local i = 1
+        while i <= #code do
+            local inst = code[i]
+            push("push_u8", inst)
+            i += 1
+            local instruction = _instruction_type(inst)
+            if instruction ~= nil then
+                for _, v in instruction do
+                    push(v, code[i])
+                    i += 1
+                end
             end
         end
     end
