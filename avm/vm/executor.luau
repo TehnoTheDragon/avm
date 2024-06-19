@@ -105,9 +105,9 @@ local function _execute(code: stack.Stack, stack: stack.Stack, registers: regset
     end
 end
 
-local function _create_executor()
-    local memory = memory.create(1024)
-    local stack = stack.create(memory, 0, 64)
+local function _create_executor(MEM_SIZE: number, STACK_SIZE: number)
+    local memory = memory.create(MEM_SIZE)
+    local stack = stack.create(memory, 0, STACK_SIZE)
 
     local registers = regset.create(4)
 
